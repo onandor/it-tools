@@ -2,7 +2,7 @@
 import { IconDragDrop, IconHeart } from '@tabler/icons-vue';
 import { useHead } from '@vueuse/head';
 import { computed } from 'vue';
-import Draggable from 'vuedraggable';
+import draggable from 'vuedraggable';
 import ColoredCard from '../components/ColoredCard.vue';
 import ToolCard from '../components/ToolCard.vue';
 import { useToolStore } from '@/tools/tools.store';
@@ -53,7 +53,7 @@ function onUpdateFavoriteTools() {
               <n-icon :component="IconDragDrop" size="18" />
             </c-tooltip>
           </h3>
-          <Draggable
+          <draggable
             :list="favoriteTools"
             class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4"
             ghost-class="ghost-favorites-draggable"
@@ -63,7 +63,7 @@ function onUpdateFavoriteTools() {
             <template #item="{ element: tool }">
               <ToolCard :tool="tool" />
             </template>
-          </Draggable>
+          </draggable>
         </div>
       </transition>
 
