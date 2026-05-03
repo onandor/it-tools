@@ -4,77 +4,78 @@ import {
   capitalCase,
   constantCase,
   dotCase,
-  headerCase,
+  kebabCase,
   noCase,
-  paramCase,
   pascalCase,
+  pascalSnakeCase,
   pathCase,
   sentenceCase,
   snakeCase,
+  trainCase
 } from 'change-case';
 import InputCopyable from '../../components/InputCopyable.vue';
-
-const baseConfig = {
-  stripRegexp: /[^A-Za-zÀ-ÖØ-öø-ÿ]+/gi,
-};
 
 const input = ref('lorem ipsum dolor sit amet');
 
 const formats = computed(() => [
   {
-    label: 'Lowercase:',
+    label: 'Lower:',
     value: input.value.toLocaleLowerCase(),
   },
   {
-    label: 'Uppercase:',
+    label: 'Upper:',
     value: input.value.toLocaleUpperCase(),
   },
   {
-    label: 'Camelcase:',
-    value: camelCase(input.value, baseConfig),
+    label: 'Camel:',
+    value: camelCase(input.value),
   },
   {
-    label: 'Capitalcase:',
-    value: capitalCase(input.value, baseConfig),
+    label: 'Capital:',
+    value: capitalCase(input.value),
   },
   {
-    label: 'Constantcase:',
-    value: constantCase(input.value, baseConfig),
+    label: 'Constant:',
+    value: constantCase(input.value),
   },
   {
-    label: 'Dotcase:',
-    value: dotCase(input.value, baseConfig),
+    label: 'Dot:',
+    value: dotCase(input.value),
   },
   {
-    label: 'Headercase:',
-    value: headerCase(input.value, baseConfig),
+    label: 'Kebab:',
+    value: kebabCase(input.value),
   },
   {
-    label: 'Nocase:',
-    value: noCase(input.value, baseConfig),
+    label: 'No case:',
+    value: noCase(input.value),
   },
   {
-    label: 'Paramcase:',
-    value: paramCase(input.value, baseConfig),
+    label: 'Pascal:',
+    value: pascalCase(input.value),
   },
   {
-    label: 'Pascalcase:',
-    value: pascalCase(input.value, baseConfig),
+    label: 'Pascal-snake:',
+    value: pascalSnakeCase(input.value),
   },
   {
-    label: 'Pathcase:',
-    value: pathCase(input.value, baseConfig),
+    label: 'Path:',
+    value: pathCase(input.value),
   },
   {
-    label: 'Sentencecase:',
-    value: sentenceCase(input.value, baseConfig),
+    label: 'Sentence:',
+    value: sentenceCase(input.value),
   },
   {
-    label: 'Snakecase:',
-    value: snakeCase(input.value, baseConfig),
+    label: 'Snake:',
+    value: snakeCase(input.value),
   },
   {
-    label: 'Mockingcase:',
+    label: 'Train:',
+    value: trainCase(input.value),
+  },
+  {
+    label: 'Mocking:',
     value: input.value
       .split('')
       .map((char, index) => (index % 2 === 0 ? char.toUpperCase() : char.toLowerCase()))
@@ -83,9 +84,9 @@ const formats = computed(() => [
 ]);
 
 const inputLabelAlignmentConfig = {
-  labelPosition: 'left',
+  labelPosition: 'left' as 'left' | 'top' | undefined,
   labelWidth: '120px',
-  labelAlign: 'right',
+  labelAlign: 'right' as 'left' | 'right' | undefined,
 };
 </script>
 
