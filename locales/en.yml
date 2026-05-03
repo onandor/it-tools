@@ -424,3 +424,7 @@ tools:
   xml-to-json:
     title: XML to JSON
     description: Convert XML to JSON
+
+  cuid-generator:
+    title: CUID Generator
+    description: A CUID is a portable and sequentially-ordered unique identifier designed for horizontal scalability and speed.

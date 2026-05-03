@@ -80,11 +80,13 @@ const themeVars = useThemeVars();
   flex-direction: row;
   .menu {
     flex: 1;
-    margin-bottom: 5px;
 
     ::v-deep(.n-menu-item-content::before) {
       left: 0;
       right: 13px;
+    }
+    ::v-deep(.n-menu-item-content__icon) {
+      margin-top: 5px;
     }
   }
 
