@@ -4,6 +4,7 @@ import { NGlobalStyle, NMessageProvider, NNotificationProvider, darkTheme } from
 import { darkThemeOverrides, lightThemeOverrides } from './themes';
 import { layouts } from './layouts';
 import { useStyleStore } from './stores/style.store';
+import { syncRef } from '@vueuse/core';
 
 const route = useRoute();
 const layout = computed(() => route?.meta?.layout ?? layouts.base);
@@ -14,10 +15,7 @@ const themeOverrides = computed(() => (styleStore.isDarkTheme ? darkThemeOverrid
 
 const { locale } = useI18n();
 
-syncRef(
-  locale,
-  useStorage('locale', locale),
-);
+syncRef<string | null, string | null>(locale, useStorage('locale', locale));
 </script>
 
 <template>

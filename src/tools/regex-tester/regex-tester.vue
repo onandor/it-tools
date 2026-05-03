@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RandExp from 'randexp';
 import { render } from '@regexper/render';
+import { ShadowRoot } from 'vue-shadow-dom';
 import type { ShadowRootExpose } from 'vue-shadow-dom';
 import { matchRegex } from './regex-tester.service';
 import { useValidation } from '@/composable/validation';
@@ -21,7 +22,7 @@ const regexValidation = useValidation({
   rules: [
     {
       message: 'Invalid regex: {0}',
-      validator: value => new RegExp(value),
+      validator: (value) => new RegExp(value),
       getErrorMessage: (value) => {
         const _ = new RegExp(value);
         return '';
@@ -45,15 +46,13 @@ const results = computed(() => {
   }
   if (unicode.value) {
     flags += 'u';
-  }
-  else if (unicodeSets.value) {
+  } else if (unicodeSets.value) {
     flags += 'v';
   }
 
   try {
     return matchRegex(regex.value, text.value, flags);
-  }
-  catch (_) {
+  } catch (_) {
     return [];
   }
 });
@@ -62,32 +61,27 @@ const sample = computed(() => {
   try {
     const randexp = new RandExp(new RegExp(regex.value.replace(/\(\?\<[^\>]*\>/g, '(?:')));
     return randexp.gen();
-  }
-  catch (_) {
+  } catch (_) {
     return '';
   }
 });
 
-watchEffect(
-  async () => {
-    const regexValue = regex.value;
-    // shadow root is required:
-    // @regexper/render append a <defs><style> that broke svg transparency of icons in the whole site
-    const visualizer = visualizerSVG.value?.shadow_root;
-    if (visualizer) {
-      while (visualizer.lastChild) {
-        visualizer.removeChild(visualizer.lastChild);
-      }
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      try {
-        await render(regexValue, svg);
-      }
-      catch (_) {
-      }
-      visualizer.appendChild(svg);
+watchEffect(async () => {
+  const regexValue = regex.value;
+  // shadow root is required:
+  // @regexper/render append a <defs><style> that broke svg transparency of icons in the whole site
+  const visualizer = visualizerSVG.value?.shadow_root;
+  if (visualizer) {
+    while (visualizer.lastChild) {
+      visualizer.removeChild(visualizer.lastChild);
     }
-  },
-);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    try {
+      await render(regexValue, svg);
+    } catch (_) {}
+    visualizer.appendChild(svg);
+  }
+});
 </script>
 
 <template>
@@ -101,9 +95,7 @@ watchEffect(
         rows="3"
         :validation="regexValidation"
       />
-      <router-link target="_blank" to="/regex-memo" mb-1 mt-1>
-        See Regular Expression Cheatsheet
-      </router-link>
+      <router-link target="_blank" to="/regex-memo" mb-1 mt-1> See Regular Expression Cheatsheet </router-link>
       <n-space>
         <n-checkbox v-model:checked="global">
           <span title="Global search">Global search. (<code>g</code>)</span>
@@ -140,18 +132,10 @@ watchEffect(
       <n-table v-if="results?.length > 0">
         <thead>
           <tr>
-            <th scope="col">
-              Index in text
-            </th>
-            <th scope="col">
-              Value
-            </th>
-            <th scope="col">
-              Captures
-            </th>
-            <th scope="col">
-              Groups
-            </th>
+            <th scope="col">Index in text</th>
+            <th scope="col">Value</th>
+            <th scope="col">Captures</th>
+            <th scope="col">Groups</th>
           </tr>
         </thead>
         <tbody>
@@ -175,19 +159,15 @@ watchEffect(
           </tr>
         </tbody>
       </n-table>
-      <c-alert v-else>
-        No match
-      </c-alert>
+      <c-alert v-else> No match </c-alert>
     </c-card>
 
     <c-card title="Sample matching text" mt-3>
-      <pre style="white-space: pre-wrap; word-break: break-all;">{{ sample }}</pre>
+      <pre style="white-space: pre-wrap; word-break: break-all">{{ sample }}</pre>
     </c-card>
 
-    <c-card title="Regex Diagram" style="overflow-x: scroll;" mt-3>
-      <shadow-root ref="visualizerSVG">
-&#xa0;
-      </shadow-root>
+    <c-card title="Regex Diagram" style="overflow-x: scroll" mt-3>
+      <ShadowRoot ref="visualizerSVG">&#xa0;</ShadowRoot>
     </c-card>
   </div>
 </template>

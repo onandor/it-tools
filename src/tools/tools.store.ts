@@ -1,4 +1,4 @@
-import { type MaybeRef, get, useStorage } from '@vueuse/core';
+import { get, useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
 import _ from 'lodash';
